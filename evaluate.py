@@ -58,7 +58,7 @@ def handle_multiple_choice(question, options, correct_option, model):
 
 def handle_context_qa(question, context, actual_answer, model):
     predicted_answer = get_answer_from_local_ollama_context(model, question, context)
-    score = min(max(int(float(get_evaluation_score_context(question, actual_answer, predicted_answer))), 0), 100)
+    score = int(float(get_evaluation_score_context(question, actual_answer, predicted_answer)))
     return score
 
 def handle_topic_classification(question, topic_options, correct_topic, model):
