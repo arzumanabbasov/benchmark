@@ -47,10 +47,10 @@ def get_benchmark_from_filename(filename, metadata):
 
 def handle_qa(question, actual_answer, model):
     predicted_answer = get_answer_from_local_ollama(model, question, context=None)
-    score = min(max(int(float(evaluate_prediction(question, predicted_answer, actual_answer))), 0), 100)
+    score = min(max(int(float(get_evaluation_score(question, predicted_answer, actual_answer))), 0), 100)
     return score
 
-def handle_finance_qa(question, options, correct_option, model):
+def handle_multiple_choice(question, options, correct_option, model):
     predicted_option = get_model_answer_multiple_options(question, options=options, model=model, dstype='mc')
     print(predicted_option)
     score = compare_answers(actual_answer=correct_option, predicted_answer=predicted_option)
@@ -67,27 +67,24 @@ def handle_topic_classification(question, topic_options, correct_topic, model):
     score = compare_answers(actual_answer=correct_topic, predicted_answer=predicted_topic)
     return score
 
-def evaluate_prediction(question, predicted_answer, actual_answer):
-    return get_evaluation_score(question, actual_answer, predicted_answer)
-
 def run_benchmark(model_name, benchmark_type, df, results):
     scores = []
-    if benchmark_type == "MMLU_QA":
+    if benchmark_type == "QA":
         for index, row in df.iterrows():
             question = row['Sual']
             actual_answer = row['Cavab']
             score = handle_qa(question, actual_answer, model_name)
             scores.append(score)
     
-    elif benchmark_type == "MMLU_FinanceQA":
+    elif benchmark_type == "Reshad":
         for index, row in df.iterrows():
             question = row['text']
             options = row['options']
             correct_option = row['answer']
-            score = handle_finance_qa(question, options, correct_option, model_name)
+            score = handle_topic_classification(question, options, correct_option, model_name)
             scores.append(score)
 
-    elif benchmark_type == "FinanceContextQA":
+    elif benchmark_type == "ContextQA":
         for index, row in df.iterrows():
             question = row['question']
             context = row['context']
@@ -95,12 +92,12 @@ def run_benchmark(model_name, benchmark_type, df, results):
             score = handle_context_qa(question, context, actual_answer, model_name)
             scores.append(score)
 
-    elif benchmark_type == "TopicQA":
+    elif benchmark_type == "Arzuman":
         for index, row in df.iterrows():
             question = row['text']
             topic_options = row['options']
             correct_topic = row['answer']
-            score = handle_topic_classification(question, topic_options, correct_topic, model_name)
+            score = handle_multiple_choice(question, topic_options, correct_topic, model_name)
             scores.append(score)
 
     else:
