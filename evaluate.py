@@ -24,16 +24,16 @@ metadata = {
     "description": "This notebook evaluates different LLM models across various benchmark types such as MMLU, FinanceQA, and Contextual QA.",
     "supported_models": ["llama3.1", "llama3.1_az"],
     "benchmark_types": {
-        "MMLU_QA": "Handles questions with simple Q&A format",
-        "MMLU_FinanceQA": "Handles questions with options where one is correct",
-        "FinanceContextQA": "Handles questions with context and answers",
-        "TopicQA": "Handles questions with topic-based options where one is correct"
+        "": "Handles questions with simple Q&A format",
+        "": "Handles questions with options where one is correct",
+        "": "Handles questions with context and answers",
+        "": "Handles questions with topic-based options where one is correct"
     },
     "dataset_naming_convention": {
-        "_mmlu_fqa": "MMLU_FinanceQA",
-        "_cqa": "FinanceContextQA",
-        "_qa": "MMLU_QA",
-        "_tc": "TopicQA"
+        "_mmlu_fqa": "",
+        "_cqa": "",
+        "_qa": "",
+        "_tc": ""
     }
 }
 
